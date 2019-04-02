@@ -1,6 +1,11 @@
 package com.javabrains.SpringWithJersey.repository;
 
-public class HelloWorldManager implements IDefaultInterFace {
+import org.springframework.stereotype.Component;
+
+import com.javabrains.SpringWithJersey.repository.interfaces.IHello;
+
+@Component
+public class HelloWorldManager implements IHello {
 
 	@Override
 	public String getHelloWorld() {

@@ -6,22 +6,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import com.javabrains.SpringWithJersey.repository.HelloWorldManager;
-import com.javabrains.SpringWithJersey.repository.IDefaultInterFace;
+import com.javabrains.SpringWithJersey.repository.interfaces.IHello;
 
-@Component
-@Path("/default")
+@Path("/hello")
 public class HelloWorld {
-	
+
 	@Autowired
-	public IDefaultInterFace helloWorldManager;
-	
+	public IHello iHello;
+
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getHelloWorld() {
-		return helloWorldManager.getHelloWorld();
+		return iHello.getHelloWorld();
 	}
 
 }

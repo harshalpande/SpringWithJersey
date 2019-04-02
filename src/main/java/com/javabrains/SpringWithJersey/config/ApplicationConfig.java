@@ -1,32 +1,21 @@
 package com.javabrains.SpringWithJersey.config;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
 
-import com.javabrains.SpringWithJersey.model.Employee;
-import com.javabrains.SpringWithJersey.repository.HelloWorldManager;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.springframework.stereotype.Component;
+
+import com.javabrains.SpringWithJersey.rest.EmployeeResource;
 import com.javabrains.SpringWithJersey.rest.HelloWorld;
 
+@Component
 @ApplicationPath("/SpringWithJersey")
-public class ApplicationConfig extends Application {
+public class ApplicationConfig extends ResourceConfig {
 
-	@Override
-	public Set<Class<?>> getClasses() {
-
-		Set<Class<?>> classSet = new HashSet<>();
-		// Models
-		classSet.add(Employee.class);
-
-		// Resources
-		classSet.add(HelloWorld.class);
+	public ApplicationConfig() {
 		
-		// Repository
-		classSet.add(HelloWorldManager.class);
-		
-		return classSet;
+		register(HelloWorld.class);
+		register(EmployeeResource.class);
 	}
 
 }
