@@ -2,8 +2,8 @@ package com.javabrains.SpringWithJersey.dao;
 
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.query.NativeQuery;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateTemplate;
@@ -28,7 +28,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	@Transactional
 	public boolean saveEmployee(Employee employee) {
 		try {
-			hibernateTemplate.save(employee);
+			hibernateTemplate.persist(employee);
 			return true;
 		} catch (DataAccessException e) {
 			e.printStackTrace();
@@ -38,18 +38,32 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 
 	@Override
 	@Transactional
-	public boolean deleteEmployee(String empId) {
-		Session session = null;
+	public boolean deleteEmployeeByEmpId(String empId) {
 		try {
-
-			
-
+			Employee employee = findByEmpId(empId);
+			if (employee == null) {
+				return false;
+			}
+			hibernateTemplate.delete(employee);
+			return true;
 		} catch (DataAccessException e) {
 			e.printStackTrace();
-		} finally {
-			session.close();
+			return false;
 		}
-		return false;
+	}
+
+	@Override
+	public Employee findByEmpId(String empId) {
+		Employee employee = null;
+		DetachedCriteria criteria = DetachedCriteria.forClass(Employee.class);
+		criteria.add(Restrictions.eq("empid", empId));
+		List<Employee> listEmployee = (List<Employee>) hibernateTemplate.findByCriteria(criteria);
+		if (listEmployee.size() > 0) {
+			employee = listEmployee.get(0);
+		} else {
+			employee = null;
+		}
+		return  employee;
 	}
 
 }

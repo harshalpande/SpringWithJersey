@@ -26,8 +26,13 @@ public class EmployeeManager implements IEmployee {
 	}
 
 	@Override
-	public boolean deleteEmployee(String empId) {
-		return iEmployeeDao.deleteEmployee(empId);
+	public boolean deleteEmployeeByEmpId(String empId) {
+		return iEmployeeDao.deleteEmployeeByEmpId(empId);
+	}
+
+	@Override
+	public Employee findByEmpId(String empId) {
+		return iEmployeeDao.findByEmpId(empId);
 	}
 
 }
