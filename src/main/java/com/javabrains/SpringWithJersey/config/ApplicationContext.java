@@ -9,10 +9,17 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 @Configuration
+/**
+ * Create environmentVariable envTarget and set value = test. Here, if nothing
+ * loads then the default value of dev will be loaded. Out of the 2 property
+ * files present one will be loaded but after a system log-off and log-in again.
+ */
+@PropertySource({ "classpath:${envTarget:dev}-environment.properties" })
 public class ApplicationContext {
 
 	@Bean
@@ -24,7 +31,6 @@ public class ApplicationContext {
 		dataSource.setPassword("password");
 		dataSource.setMaxActive(3);
 		dataSource.setInitialSize(5);
-
 		return dataSource;
 	}
 
@@ -34,11 +40,8 @@ public class ApplicationContext {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource);
 		sessionFactory.setPackagesToScan("com.javabrains.SpringWithJersey");
-
 		sessionFactory.setHibernateProperties(getHibernateProperties());
-
 		return sessionFactory;
-
 	}
 
 	public Properties getHibernateProperties() {
