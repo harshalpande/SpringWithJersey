@@ -10,6 +10,8 @@ public interface IEmployeeDao {
 	
 	boolean saveEmployee(Employee employee);
 	
-	boolean deleteEmployee(String empId);
+	boolean deleteEmployeeByEmpId(String empId);
+	
+	Employee findByEmpId(String empId);
 
 }

@@ -50,6 +50,7 @@ public class ApplicationContext {
 		properties.setProperty("hibernate.hbm2ddl.auto", "update");
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
 		properties.setProperty("hibernate.show_sql", "true");
+		properties.setProperty("hibernate.temp.use_jdbc_metadata_defaults", "false");
 
 		return properties;
 	}

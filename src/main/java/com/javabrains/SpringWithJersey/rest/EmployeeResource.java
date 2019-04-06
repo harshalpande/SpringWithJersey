@@ -5,6 +5,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -21,6 +22,9 @@ public class EmployeeResource {
 
 	@Autowired
 	public IEmployee iEmployee;
+	
+	@Autowired
+	public AddressResource addressResource;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -35,13 +39,29 @@ public class EmployeeResource {
 	}
 
 	@DELETE
-	public Response deleteEmployee(@QueryParam("empId") String empId) {
-		boolean isDeleted = iEmployee.deleteEmployee(empId);
+	public Response deleteEmployeeByEmpId(@QueryParam("empId") String empId) {
+		boolean isDeleted = iEmployee.deleteEmployeeByEmpId(empId);
 		if (isDeleted) {
 			return Response.status(Status.OK).entity(isDeleted).build();
 		} else {
 			return Response.status(Status.NOT_IMPLEMENTED).entity(isDeleted).build();
 		}
+	}
+
+	@GET
+	@Path("/{empId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getEmployeeByEmpId(@PathParam("empId") String empId) {
+		Employee employee = iEmployee.findByEmpId(empId);
+		if (employee == null) {
+			return Response.status(Status.NO_CONTENT).build();
+		}
+		return Response.status(Status.FOUND).entity(employee).build();
+	}
+	
+	@Path("{empId}/address")
+	public AddressResource getAddress() {
+		return addressResource;
 	}
 
 }
